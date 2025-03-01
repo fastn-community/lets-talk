@@ -7,7 +7,6 @@ fn create_meeting(
     config: crate::Config,
     app_url: ft_sdk::AppUrl,
     lets_auth_app_url: ft_sdk::AppUrl<"lets-auth">,
-    scheme: crate::HTTPSScheme,
 ) -> ft_sdk::form::Result {
     if let Err(e) = user.is_special(&config, &host) {
         use crate::auth::AuthorizationError;
@@ -21,13 +20,10 @@ fn create_meeting(
             }
             AuthorizationError::RequiresVerification => {
                 let verification_link = lets_auth_app_url.join(
-                    &scheme,
-                    &host,
                     format!(
                         "/backend/resend-confirmation-email/?email={email}",
                         email = user.email
-                    )
-                    .as_str(),
+                    ),
                 );
                 let link_text = match verification_link {
                     Ok(v) => format!(
@@ -72,8 +68,7 @@ fn create_meeting(
     )?;
 
     // lets-talk.fifthtry.site/meeting.ftd
-    let app_url = crate::temp_fix_app_url(app_url);
-    let meeting_page_url = app_url.join(&scheme, &host, "meeting")?;
+    let meeting_page_url = app_url.join("meeting")?;
 
     Ok(
         ft_sdk::form::redirect(format!("{meeting_page_url}{}", meeting.data.id))?
