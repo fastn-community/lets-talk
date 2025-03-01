@@ -21,7 +21,7 @@ homepage = "https://github.com/fastn-community/lets-talk"
 
 
 [workspace.dependencies]
-ft-sdk = { version = "0.4.1", features = ["field-extractors"] }
+ft-sdk = { version = "0.5.0", features = ["field-extractors"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 chrono = { version = "0.4", features = ["serde"], default-features = false }
